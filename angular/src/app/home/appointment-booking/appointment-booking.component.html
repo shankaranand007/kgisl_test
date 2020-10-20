@@ -1,0 +1,114 @@
+<input type="hidden" data-toggle="modal" data-target="#openModel" id="open">
+
+<!-- <div id="openModel" class="modal fade" role="dialog"> -->
+<div id="openModel" role="dialog">
+
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create slot</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label style="margin-right: 10px;">
+            Start time
+            <input [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" [(ngModel)]="selectedMoment2"
+              (ngModelChange)="change(selectedMoment2)">
+            <owl-date-time [pickerType]="'timer'" #dt4></owl-date-time>
+          </label>
+          <owl-date-time #dt1></owl-date-time>
+          <label>
+            End time
+            <strong>{{add_minute  | amLocal | amDateFormat: ' HH:mm'}}</strong>
+          </label>
+          <!-- <owl-date-time #dt1></owl-date-time> -->
+        </div>
+        <div class="form-group">
+
+          <textarea name="" id="" cols="30" rows="10" class="form-control input_mail" placeholder="Message"></textarea>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="add()">Check & add slot</button>
+        <!-- <input type="hidden" data-toggle="modal" data-target="#openModel" id="open"> -->
+
+        <button type="hidden" class="btn btn-default" data-dismiss="modal" id="close"></button>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div class="">
+
+  <button type="button" class="btn btn-primary" style="width:200px;margin: 1%;padding: 5px; float: left;"
+    (click)="backtolist()"><small>BACK</small></button>
+  <button type="button" class="btn btn-primary" style="width:200px;margin: 1%;padding: 5px; float: left;"
+    (click)="addSlot()"><small>ADD SLOT</small></button>
+
+
+  <div style="float: right;margin-right: 5%;margin-top: 1%;">
+
+    <label>
+      Date
+      <input [owlDateTimeTrigger]="dt3" [(ngModel)]="selectedMoment" (ngModelChange)="dataLoad(selectedMoment)"
+        [owlDateTime]="dt3">
+      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+    </label>
+    <owl-date-time #dt1></owl-date-time>
+  </div>
+
+</div>
+
+
+<br>
+
+
+
+<div style="position: relative;margin-top: 5%;">
+
+  <ngx-datatable class="material" [rows]="rows" [headerHeight]="50" [footerHeight]="50" [rowHeight]="40"
+    [scrollbarV]="true" (page)="onPage($event)">
+    <ngx-datatable-column name="Slot start time" [width]="300">
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+
+        <strong> {{row.start_time  | amLocal | amDateFormat: ' HH:mm'}}
+        </strong>
+      </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="Slot End time" [width]="300">
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+
+        <strong> {{row.end_time  | amLocal | amDateFormat: ' HH:mm'}}
+        </strong>
+      </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="Section" [width]="300">
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        <strong>{{ row.section }}</strong>
+      </ng-template>
+    </ngx-datatable-column>
+
+
+
+  </ngx-datatable>
+</div>
+
+<!-- <div style="position: relative;margin-top: 5%;">
+  <ngx-datatable  class="material"   [headerHeight]="50"
+  [footerHeight]="50"   [scrollbarV]="true"  [rowHeight]="40"
+  [rows]="rows" [columns]="columns"> </ngx-datatable>
+</div> -->
