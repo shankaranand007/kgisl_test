@@ -17,37 +17,42 @@ export class AppointmentBookingComponent implements OnInit {
 
 
   ngOnInit() {
+    this.dataLoad()
   }
   backtolist() {
     this.router.navigateByUrl('/home');
   }
-  add() {
+  change(params) {
+    this.add_minute = moment(params).add(30, 'minutes')
 
   }
-  change(data) {
-    this.add_minute = moment(data).add(30, 'minutes')
-
-
-    this.homeservice.checkavailability(moment.parseZone(data).utc().format(), moment.parseZone(this.add_minute).utc().format())
+  add(params) {
+    this.add_minute = moment(this.selectedMoment2).add(30, 'minutes')
+    this.homeservice.checkavailability(moment.parseZone(this.selectedMoment2).utc().format(), moment.parseZone(this.add_minute).utc().format())
       .subscribe((data) => {
         if (data['error_code']) {
           alert("this slot was already created")
         } else {
           var today = new Date()
           var curHr = today.getHours()
-
+          var sec = ""
           if (curHr < 12) {
+            sec = "morning"
             console.log('morning')
           } else if (curHr < 18) {
+            sec = "afternoon"
+
             console.log('afternoon')
           } else {
+            sec = "evening"
+
             console.log('evening')
           }
           let value = {
-            "start_time": moment.parseZone(data).utc().format(),
+            "start_time": moment.parseZone(params).utc().format(),
             "end_time": moment.parseZone(this.add_minute).utc().format(),
             "date_": moment.parseZone(today).utc().format(),
-            "section": curHr
+            "section": sec
           }
           this.homeservice.createSlot(value)
             .subscribe((data) => {
@@ -60,6 +65,7 @@ export class AppointmentBookingComponent implements OnInit {
       })
   }
   dataLoad() {
+    console.log("on data load")
     let convertDate = moment.parseZone(this.selectedMoment).utc().format()
     // console.log(moment.parseZone(this.selectedMoment).utc().format())
     this.homeservice.getAllslot(convertDate)

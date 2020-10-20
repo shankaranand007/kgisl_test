@@ -4,6 +4,11 @@ const util = require("util");
 const output = require('../helper/api');
 const createSlot = require('../model/createSlot.model');
 const moment = require('moment');
+// let date_ = moment().format();
+// const start = moment.utc(timeline).format('YYYY-MM-DD 00:00:00');
+// const end = moment.utc(timeline).format('YYYY-MM-DD 23:59:59');
+// let exp_time = moment(current_time).add(30, 'minutes')
+// if (moment(current_t).isBefore(moment(add_30))) {
 
 
 
@@ -97,12 +102,15 @@ class SlotController {
             new Promise((resolve, reject) => {
                 console.log()
                 const start = moment.utc(req.params.start_section);
+                const add_30  =  moment.utc(req.params.start_section).add(30, 'minutes')
+                const sub_30 = moment.utc(req.params.start_section).subtract(30, 'minutes')
+
                 const end = moment.utc(req.params.end_section);
                 createSlot.find({
-                    $and: [{ start_time: { $gte: start } }, { end_time: { $lte: end } }]
+                    $and: [{ start_time: { $gte: sub_30 } }, { end_time: { $lte: add_30 } }]
                 })
-                    .count()
-                    .exec((err, data) => {
+                .count()
+                .exec((err, data) => {
                         if (err) reject(output.invalid(req, res, err))
                         else
                             if (data) {
@@ -110,10 +118,8 @@ class SlotController {
                             } else {
                                 resolve(output.ok(req, res, data, "Not Created", 0))
                             }
-
-                    })
+                    });
             });
-
         } catch (ex) { output.serverError(req, res, ex) }
     }
 }

@@ -22,7 +22,7 @@ export class HomeService {
     }
 
     checkavailability(from, to) {
-        return this.http.get('http://127.0.0.1:4000/api/slot/checkAvailable/' + from + '/' + to + '/1');
+        return this.http.get('http://127.0.0.1:4000/api/slot/checkAvailable/' + from + '/' + to );
     }
 
     getAllslot(data) {
@@ -30,10 +30,10 @@ export class HomeService {
     }
     createSlot(value) {
         const headers = new HttpHeaders();
-        const data = JSON.stringify(value);
+        // const data = JSON.stringify(value);
         headers.append('Content-type', 'application/json');
-        return this.http.post('http://127.0.0.1:4000/api/slot', data, { headers: headers })
-            .map((res: Response) => res.json())
+        return this.http.post('http://127.0.0.1:4000/api/slot', value, { headers: headers })
+            // .map((res: Response) => res.json())
     }
 
 }
